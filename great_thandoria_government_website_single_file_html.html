@@ -1,0 +1,375 @@
+<!--
+Great Thandoria - Official Government Site
+Single-file HTML/CSS/JS starter template
+Place this file as `index.html` and host on GitHub Pages / Netlify.
+
+Sections included:
+- Topbar and responsive navigation
+- Hero with flag and motto
+- Quick facts (population, GDP, capital)
+- Ministries (Government departments) with detail modal
+- Military overview
+- Economy overview with simple animated counters
+- Foreign Affairs / Allies
+- History timeline
+- News / Announcements (static list)
+- Contact / Embassy information
+- Footer with social links and legal disclaimer
+
+Deployment:
+- GitHub Pages: create a repo, add this index.html to the root, enable Pages in repo settings.
+- Netlify: drag-and-drop this file into the Netlify site deploy UI.
+
+Customize the content: replace placeholder text and images (flag.svg) and update contact emails.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>The Great Thandorian Empire — Official Government Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Official site of The Great Thandorian Empire — Government, Ministries, News, and Contact.">
+  <style>
+    :root{--navy:#0b2545;--accent:#c79a1a;--muted:#6b7280;--bg:#f6f7fb;--card:#ffffff}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI, Roboto, 'Helvetica Neue', Arial; margin:0; color:#0f1724; background:var(--bg);}
+    header{background:linear-gradient(180deg, rgba(11,37,69,0.95), rgba(11,37,69,0.9)); color:white; position:sticky; top:0; z-index:40}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .flag{width:56px;height:36px;background:linear-gradient(90deg,var(--accent),#e6b94e);border-radius:4px;box-shadow:0 2px 6px rgba(2,6,23,0.35);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy)}
+    .title{font-family:Merriweather,serif;font-weight:700;font-size:18px}
+    nav{display:flex;gap:14px}
+    nav a{color:rgba(255,255,255,0.92);text-decoration:none;font-weight:600}
+    .hero{padding:44px 0 64px}
+    .hero-grid{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+    .hero-card{background:var(--card);padding:26px;border-radius:12px;box-shadow:0 6px 18px rgba(12,18,35,0.06)}
+    .motto{font-family:Merriweather,serif;font-size:20px;color:var(--navy)}
+    .cta-row{margin-top:18px;display:flex;gap:12px}
+    .btn{background:var(--accent);color:var(--navy);padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:700}
+
+    /* Quick facts */
+    .facts{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+    .fact{background:linear-gradient(180deg,rgba(11,37,69,0.03),#fff);padding:12px;border-radius:8px;min-width:140px}
+    .fact strong{display:block;font-size:20px}
+
+    /* Sections */
+    section{padding:40px 0}
+    h2.section-title{font-family:Merriweather,serif;color:var(--navy);margin:0 0 16px;font-size:22px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .ministry{background:var(--card);padding:18px;border-radius:10px;border-left:4px solid var(--navy)}
+    .ministry h3{margin:0 0 6px}
+    .ministry p{margin:0;color:var(--muted);font-size:14px}
+
+    /* Timeline */
+    .timeline{display:flex;flex-direction:column;gap:12px}
+    .event{display:flex;gap:12px;align-items:flex-start}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--navy);margin-top:6px}
+
+    /* News */
+    .news-list{display:flex;flex-direction:column;gap:10px}
+    .news-item{background:var(--card);padding:12px;border-radius:8px;border-left:4px solid var(--accent)}
+    .muted{color:var(--muted)}
+
+    /* Military and economy cards */
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .stat-card{background:var(--card);padding:18px;border-radius:10px}
+    .counter{font-size:28px;font-weight:800;color:var(--navy)}
+
+    footer{padding:28px 0;background:linear-gradient(180deg,rgba(11,37,69,0.03),transparent)}
+
+    /* Responsive */
+    @media (max-width:920px){.hero-grid{grid-template-columns:1fr;}.grid-3{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr}.topbar{padding:10px 0}.flag{width:46px;height:28px}}
+    @media (max-width:560px){.grid-3{grid-template-columns:1fr}.nav-toggle{display:block}}
+
+    /* Mobile nav */
+    .nav-toggle{display:none}
+    .mobile-nav{display:none}
+    .show-mobile{display:block}
+
+    /* small touches */
+    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(11,37,69,0.06);font-weight:600}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="topbar">
+        <div class="brand">
+          <div class="flag" aria-hidden>GT</div>
+          <div>
+            <div class="title">The Great Thandorian Empire</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.8)">"The Great Thandorian Empire Will Persevere!"</div>
+          </div>
+        </div>
+        <nav id="nav-desktop">
+          <a href="#home">Home</a>
+          <a href="#ministries">Ministries</a>
+          <a href="#military">Military</a>
+          <a href="#economy">Economy</a>
+          <a href="#foreign">Foreign Affairs</a>
+          <a href="#history">History</a>
+          <a href="#news">News</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="nav-toggle" onclick="toggleMobileNav()" aria-expanded="false" style="background:none;border:none;color:white">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="home" class="hero">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h1 style="margin:0;font-family:Merriweather,serif;font-size:28px;color:var(--navy)">Welcome to the Official Portal of the Great Thandorian Empire</h1>
+          <p style="color:var(--muted);margin-top:8px">This site provides official information about the government's structure, ministries, current policy announcements, national statistics and the latest press releases. For embassy enquiries, see Contact.</p>
+          <div class="motto">"The Great Thandorian Empire Will Persevere!"</div>
+
+          <div class="facts" style="margin-top:18px">
+            <div class="fact"><small class="muted">Capital</small><strong>New Thandor</strong></div>
+            <div class="fact"><small class="muted">Population</small><strong>7.2M</strong></div>
+            <div class="fact"><small class="muted">Official Language</small><strong>Thandorian</strong></div>
+            <div class="fact"><small class="muted">GDP (est)</small><strong>$214B</strong></div>
+          </div>
+
+          <div class="cta-row">
+            <a class="btn" href="#news">Latest Announcements</a>
+            <a class="btn" href="#ministries" style="background:transparent;color:white;border:1px solid rgba(255,255,255,0.12)">Government Structure</a>
+          </div>
+        </div>
+
+        <aside style="position:relative">
+          <div class="hero-card" style="text-align:left">
+            <h3 style="margin-top:0">Quick Access</h3>
+            <p class="muted">Shortcuts to critical services and documents.</p>
+            <ul style="padding-left:18px">
+              <li><a href="#news">Press & Announcements</a></li>
+              <li><a href="#ministries">Ministries & Departments</a></li>
+              <li><a href="#contact">Embassy & Diplomatic Contact</a></li>
+              <li><a href="#history">Founding Documents</a></li>
+            </ul>
+            <hr>
+            <div style="margin-top:8px"><small class="muted">Status</small><div class="chip" style="margin-top:6px">Operational — No alerts</div></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="ministries">
+      <h2 class="section-title">Ministries & Departments</h2>
+      <p class="muted">The central ministries responsible for governance across national functions.</p>
+      <div class="grid-3" style="margin-top:14px">
+        <div class="ministry">
+          <h3>Ministry of Interior</h3>
+          <p>Responsible for civil administration, public safety, and national identification systems.</p>
+        </div>
+        <div class="ministry">
+          <h3>Ministry of Foreign Affairs</h3>
+          <p>Oversees diplomacy, treaties, and international representation at the United Nations and regional bodies.</p>
+        </div>
+        <div class="ministry">
+          <h3>Ministry of Defense</h3>
+          <p>Preparedness, defense policy, and management of the Thandorian Armed Forces.</p>
+        </div>
+        <div class="ministry">
+          <h3>Ministry of Economy & Finance</h3>
+          <p>Fiscal policy, taxation, trade policy, and economic planning.</p>
+        </div>
+        <div class="ministry">
+          <h3>Ministry of Education & Culture</h3>
+          <p>Education policy, cultural heritage, and national museums.</p>
+        </div>
+        <div class="ministry">
+          <h3>Ministry of Infrastructure & Environment</h3>
+          <p>Transport, utilities, and environmental protection programs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="military">
+      <h2 class="section-title">Military Overview</h2>
+      <p class="muted">Overview of force structure and readiness indicators.</p>
+      <div class="stats" style="margin-top:12px">
+        <div class="stat-card">
+          <h4 style="margin:0">Active Personnel</h4>
+          <div class="counter" data-target="120000">0</div>
+          <p class="muted" style="margin-top:6px">Total active-duty personnel across army, navy, and air force.</p>
+        </div>
+        <div class="stat-card">
+          <h4 style="margin:0">Operational Vessels & Aircraft</h4>
+          <div class="counter" data-target="320">0</div>
+          <p class="muted" style="margin-top:6px">Combined ships, submarines, and aircraft in peacetime readiness.</p>
+        </div>
+      </div>
+      <div style="margin-top:12px" class="hero-card">
+        <h3 style="margin-top:0">Defense Posture</h3>
+        <p class="muted">The Great Thandorian Empire maintains a defensive doctrine focused on territorial defense, maritime security in the Thandorian Sea, and coalition operations with allied partners. The force emphasizes mobility, integrated air defense, and maritime patrol capabilities.</p>
+      </div>
+    </section>
+
+    <section id="economy">
+      <h2 class="section-title">Economy</h2>
+      <p class="muted">Key economic indicators and trade priorities.</p>
+      <div class="stats" style="margin-top:12px">
+        <div class="stat-card">
+          <h4 style="margin:0">GDP (nominal)</h4>
+          <div class="counter" data-target="214000000000">$0</div>
+          <p class="muted" style="margin-top:6px">Estimated annual GDP in USD.</p>
+        </div>
+        <div class="stat-card">
+          <h4 style="margin:0">Major Sectors</h4>
+          <p style="margin-top:8px">Manufacturing, maritime trade, renewable energy, high-value agriculture, and technology services.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="foreign">
+      <h2 class="section-title">Foreign Affairs & Alliances</h2>
+      <p class="muted">Summary of diplomatic relations and treaty commitments.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+        <div class="hero-card" style="flex:1;min-width:260px">
+          <h4 style="margin-top:0">Allied Partners</h4>
+          <ul>
+            <li>Republic of Marind (Strategic partnership)</li>
+            <li>Federal Union of Lores (Trade & defense cooperation)</li>
+            <li>Azuri Commonwealth (Cultural exchange)</li>
+          </ul>
+        </div>
+        <div class="hero-card" style="flex:1;min-width:260px">
+          <h4 style="margin-top:0">International Organizations</h4>
+          <p class="muted">Member: Thandorian Regional Council, Observer at the Global Trade Forum.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="history">
+      <h2 class="section-title">History & Founding Documents</h2>
+      <p class="muted">A concise timeline highlighting the formation and key moments of the Empire.</p>
+      <div class="timeline" style="margin-top:12px">
+        <div class="event">
+          <div class="dot" aria-hidden></div>
+          <div>
+            <strong>Year 1923 — Founding of New Thandor</strong>
+            <div class="muted">Local chieftains unify under a constitutional monarchy to form the modern state.</div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="dot" aria-hidden></div>
+          <div>
+            <strong>Year 1950 — Industrial Expansion</strong>
+            <div class="muted">Major infrastructure programs modernize ports and rail, establishing Thandor as a regional trade hub.</div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="dot" aria-hidden></div>
+          <div>
+            <strong>Year 2002 — Democratic Reforms</strong>
+            <div class="muted">Significant constitutional reforms increase parliamentary oversight and civil liberties protections.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="news">
+      <h2 class="section-title">News & Announcements</h2>
+      <p class="muted">Official press releases and government notices. (Static list — replace with a CMS or feeds for active news.)</p>
+      <div class="news-list" style="margin-top:12px">
+        <article class="news-item">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <strong>Presidential Address on National Resilience</strong>
+              <div class="muted">Oct 24, 2025 — The Head of State addressed the nation outlining a five-year resilience plan.</div>
+            </div>
+            <a href="#" class="chip">Read</a>
+          </div>
+        </article>
+        <article class="news-item">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <strong>Trade Agreement Signed with Marind</strong>
+              <div class="muted">Sep 09, 2025 — A bilateral trade deal to reduce tariffs on agricultural exports.</div>
+            </div>
+            <a href="#" class="chip">Read</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title">Contact & Embassy Information</h2>
+      <p class="muted">For official correspondence, diplomatic credentials, or press inquiries.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:12px">
+        <div class="hero-card">
+          <h4 style="margin-top:0">Ministry of Foreign Affairs — Central Registry</h4>
+          <p class="muted">Address: 12 Imperial Way, New Thandor — Capital District</p>
+          <p class="muted">Email: <a href="mailto:info@greatthandoria.gov">info@greatthandoria.gov</a></p>
+          <p class="muted">Press: <a href="mailto:press@greatthandoria.gov">press@greatthandoria.gov</a></p>
+        </div>
+
+        <aside class="hero-card" style="height:100%">
+          <h4 style="margin-top:0">Embassy Locator</h4>
+          <p class="muted">Nearest embassy in: Capital City, Marind — Embassy contact: marind.emb@greatthandoria.gov</p>
+          <p class="muted">For travel advisories see the Travel & Immigration page (coming soon).</p>
+        </aside>
+      </div>
+
+      <div style="margin-top:12px">
+        <form onsubmit="alert('Form disabled in template — replace with server endpoint or use Netlify forms.');return false;">
+          <label class="muted">Your Name<br><input style="width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #e6e9ef"></label>
+          <label class="muted" style="display:block;margin-top:8px">Email<br><input style="width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #e6e9ef"></label>
+          <label class="muted" style="display:block;margin-top:8px">Message<br><textarea style="width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #e6e9ef" rows="4"></textarea></label>
+          <div style="margin-top:8px"><button class="btn">Send Message</button></div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div>
+        <div style="font-weight:700">The Great Thandorian Empire</div>
+        <div class="muted">Official Government Portal — For official use only</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="muted">© The Great Thandorian Empire — 2025</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // mobile nav
+    function toggleMobileNav(){
+      const nav = document.getElementById('nav-desktop');
+      if(nav.style.display === 'none' || nav.style.display === ''){nav.style.display = 'flex';}
+      else {nav.style.display = 'none';}
+    }
+
+    // animated counters
+    function animateCounters(){
+      const counters = document.querySelectorAll('.counter');
+      counters.forEach(c=>{
+        const target = +c.getAttribute('data-target');
+        const step = Math.max(1, Math.floor(target/200));
+        let cur = 0;
+        const fmt = v => {
+          if(target>1000000) return '$'+(Math.floor(v/1000000))+'M';
+          if(target>1000) return '$'+(Math.floor(v/1000))+'K';
+          return v.toLocaleString();
+        }
+        const id = setInterval(()=>{
+          cur += step;
+          if(cur>=target){cur=target;clearInterval(id)}
+          c.textContent = fmt(cur);
+        },10);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', animateCounters);
+  </script>
+</body>
+</html>
